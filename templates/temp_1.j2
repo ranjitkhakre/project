@@ -1,0 +1,52 @@
+====================
+Management switch
+====================
+edit exclusive 
+
+set interfaces {{ interf }} description {{ sname }}:ETH1
+set interfaces {{ interf }} enable
+set interfaces {{ interf }} unit 0 family ethernet-switching port-mode access
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members 640
+
+!!!!!!!!!!put it back in prod when HIT team requests to to so. if not ask them before closing the change and turn it back to prod.!!!!!!
+
+delete interfaces {{ interf }} unit 0 family ethernet-switching vlan members 640
+
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members  {{ vlan }}
+
+commit check
+commit
+
+===================
+Acess switch
+====================
+edit exclusive 
+delete 
+set interfaces {{ interf }} description {{ sname }}:ETH2
+set interfaces {{ interf }} unit 0 family ethernet-switching interface-mode access
+set interfaces {{ interf }}unit 0 family ethernet-switching vlan members 5
+set protocols vstp vlan 5 interface {{ interf }}
+
+set interfaces {{ interf }} description {{ sname }}:ETH3
+set interfaces {{ interf }} unit 0 family ethernet-switching interface-mode access
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members 25
+set protocols vstp vlan 25 interface {{ interf }}
+
+set interfaces {{ interf }} description {{ sname }}:ETH4
+set interfaces {{ interf }} unit 0 family ethernet-switching interface-mode access
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members 5
+set protocols vstp vlan 5 interface {{ interf }}
+
+set interfaces {{ interf }} description {{ sname }}:ETH5
+set interfaces {{ interf }} unit 0 family ethernet-switching interface-mode trunk
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members 9
+set protocols vstp vlan 9 interface {{ interf }}
+
+set interfaces {{ interf }} description {{ sname }}:ETH6
+set interfaces {{ interf }} unit 0 family ethernet-switching interface-mode access
+set interfaces {{ interf }} unit 0 family ethernet-switching vlan members 25
+set protocols vstp vlan 25 interface {{ interf }}
+
+
+commit check
+commit
